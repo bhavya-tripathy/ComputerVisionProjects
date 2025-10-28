@@ -1,7 +1,6 @@
 import cv2
 from deepface import DeepFace
 import numpy as np
-ions = cv2.imread('icons.png') 
 
 print("🎭 Starting Enhanced Emotion Detector...")
 print("Press 'Q' to quit anytime.")
