@@ -2,6 +2,7 @@ import cv2
 from deepface import DeepFace
 import numpy as np
 
+
 print("🎭 Starting Enhanced Emotion Detector...")
 print("Press 'Q' to quit anytime.")
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -14,6 +15,7 @@ colors = {
     "fear": (128, 0, 128),
     "disgust": (0, 128, 128)
 }
+
 
 def draw_emotion_dashboard(frame, predictions, colors):
     """Draws the emotion probability bar chart on the frame."""
@@ -94,7 +96,7 @@ while True:
     if emotion_predictions:
         draw_emotion_dashboard(frame, emotion_predictions, colors)
 
-    cv2.imshow('🎭 Enhanced Emotion Detector', frame)
+    cv2.imshow('🎭EchoMirror', frame)
     frame_count += 1
     if cv2.waitKey(1) & 0xFF == ord('q'):
         print("👋 Exiting...")
