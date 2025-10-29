@@ -1,9 +1,9 @@
-#voice intergration
 import cv2
 from deepface import DeepFace
 import numpy as np
 import pyttsx3
 import time
+import threading  
 
 print("🎭 Starting EchoMirror...")
 print("Press 'Q' to quit anytime.")
@@ -18,12 +18,6 @@ colors = {
     "fear": (128, 0, 128),
     "disgust": (0, 128, 128)
 }
-
-engine = pyttsx3.init()
-engine.setProperty('rate', 170)
-engine.setProperty('volume', 0.9)
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
 
 def draw_emotion_dashboard(frame, predictions, colors):
     start_x, start_y = 10, 20
@@ -50,6 +44,24 @@ def draw_emotion_dashboard(frame, predictions, colors):
                       (start_x + text_offset + bar_width, start_y + i * (bar_height + 10) + bar_height),
                       color, -1)
 
+engine = pyttsx3.init()
+engine.setProperty('rate', 170)
+engine.setProperty('volume', 0.9)
+voices = engine.getProperty('voices')
+
+if len(voices) > 1:
+    engine.setProperty('voice', voices[1].id)
+else:
+    engine.setProperty('voice', voices[0].id)
+
+def speak(text_to_speak):
+    """Runs the text-to-speech in a non-blocking thread."""
+    try:
+        engine.say(text_to_speak)
+        engine.runAndWait()
+    except Exception as e:
+        print(f"Error in speech thread: {e}")
+
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     raise IOError("Cannot open webcam")
@@ -61,6 +73,7 @@ emotion_predictions = {}
 last_spoken_emotion = None
 last_spoken_time = 0
 cooldown = 30  
+
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -77,16 +90,17 @@ while True:
                 emotion_predictions = analysis[0]['emotion']
                 dominant_emotion = analysis[0]['dominant_emotion'].lower()
 
-                
                 if dominant_emotion == "happy":
                     current_time = time.time()
                     if (last_spoken_emotion != "happy") or (current_time - last_spoken_time > cooldown):
-                        engine.say("You look happy today, Bhavya. Keep that spark alive.")
-                        engine.runAndWait()
                         last_spoken_emotion = "happy"
                         last_spoken_time = current_time
+                        
+                        speech_thread = threading.Thread(target=speak, args=("You look happy today, Bhavya. Keep that spark alive.",))
+                        speech_thread.start()
                 else:
                     last_spoken_emotion = dominant_emotion
+
             else:
                 dominant_emotion = "Unknown"
                 emotion_predictions = {}
@@ -95,7 +109,6 @@ while True:
             dominant_emotion = "Unknown"
             emotion_predictions = {}
 
-    
     for (x, y, w, h) in faces:
         color = colors.get(dominant_emotion, (0, 255, 0))
         cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
