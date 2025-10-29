@@ -9,7 +9,7 @@ print("🎭 Starting EchoMirror...")
 print("Press 'Q' to quit anytime.")
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-colors = {
+colors = { 
     "happy": (0, 255, 0),
     "sad": (255, 0, 0),
     "angry": (0, 0, 255),
@@ -72,7 +72,7 @@ emotion_predictions = {}
 
 last_spoken_emotion = None
 last_spoken_time = 0
-cooldown = 30  
+cooldown = 5
 
 while True:
     ret, frame = cap.read()
