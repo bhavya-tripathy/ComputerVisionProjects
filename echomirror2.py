@@ -39,7 +39,7 @@ def draw_emotion_dashboard(frame, predictions, colors):
         color = colors.get(emotion, (255, 255, 255))
         text_y_pos = start_y + i * (bar_height + 10) + bar_height // 2 + 5
         cv2.putText(frame, f"{emotion.capitalize()}:", (start_x, text_y_pos),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1, cv2.LINE_AA)
         cv2.rectangle(frame, (start_x + text_offset, start_y + i * (bar_height + 10)),
                       (start_x + text_offset + bar_width, start_y + i * (bar_height + 10) + bar_height),
                       color, -1)
