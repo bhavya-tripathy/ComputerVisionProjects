@@ -89,6 +89,7 @@ class EmotionApp(ctk.CTk):
                             speech_thread.start()
                     else:
                         self.last_spoken_emotion = dominant_emotion
+
                 
                 else:
                     dominant_emotion = "Unknown"

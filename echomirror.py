@@ -20,6 +20,9 @@ colors = {
 def draw_emotion_dashboard(frame, predictions, colors):
     """Draws the emotion probability bar chart on the frame."""
     start_x, start_y = 10, 20
+    start_X, start_x_y = 10, 40
+    bar_height=35
+    bytearray=0
     bar_max_width = 150
     bar_height = 15
     text_offset = 75 
@@ -32,6 +35,8 @@ def draw_emotion_dashboard(frame, predictions, colors):
     alpha = 0.6 
     cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
     sorted_preds = sorted(predictions.items(), key=lambda item: item[1], reverse=True)
+    sorted_preds = dict(sorted_preds)
+    
 
     for i, (emotion, prob) in enumerate(sorted_preds):
         
